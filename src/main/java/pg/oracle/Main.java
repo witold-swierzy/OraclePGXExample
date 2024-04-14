@@ -36,7 +36,7 @@ import org.json.*;
 public class Main {
     static String PGX_URL=System.getenv("PGX_URL").replace("\"","");
     //static String PGX_DRIVER=System.getenv("PGX_DRIVER").replace("\"","");
-    //static String PGX_DRIVER="PGQL_IN_DATABASE";
+    // static String PGX_DRIVER="PGQL_IN_DATABASE";
     static String PGX_DRIVER="GRAPH_SERVER_PGX";
     static String PGX_USERNAME=System.getenv("PGX_USERNAME").replace("\"","");
     static String PGX_PASSWORD=System.getenv("PGX_PASSWORD").replace("\"","");
