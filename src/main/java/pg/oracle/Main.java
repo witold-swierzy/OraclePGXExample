@@ -113,7 +113,6 @@ public class Main {
         RESTexecuteQuery();
     }
     public static void APIQuery() {
-        // still under development
         try {
             PgxGraph graph;
             ServerInstance si = GraphServer.getInstance(PGX_URL,PGX_USERNAME,PGX_PASSWORD.toCharArray());
@@ -121,7 +120,7 @@ public class Main {
             PgqlResultSet res;
             for (int i=1;i<=PGX_EXECUTIONS;i++) {
                 res = ses.queryPgql(PGX_QUERY);
-                System.out.println("Query PPGX API exection #"+i+":\n"+res.getNumResults());
+                System.out.println("Query PGX API execution #"+i+":\n"+res.getNumResults());
                 res.close();
             }
             ses.close();
@@ -130,7 +129,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //RESTQuery();
+        RESTQuery();
         APIQuery();
     }
 }
