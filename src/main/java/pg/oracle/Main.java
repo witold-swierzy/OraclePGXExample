@@ -5,6 +5,9 @@ import oracle.pgx.api.*;
 
 import java.net.URI;
 import java.net.http.*;
+import java.util.List;
+import java.util.UUID;
+
 import org.json.*;
 
 /* This example presents two ways of using Oracle Property Graph Server :
@@ -36,12 +39,14 @@ import org.json.*;
 public class Main {
     static String PGX_URL=System.getenv("PGX_URL").replace("\"","");
     //static String PGX_DRIVER=System.getenv("PGX_DRIVER").replace("\"","");
-    // static String PGX_DRIVER="PGQL_IN_DATABASE";
-    static String PGX_DRIVER="GRAPH_SERVER_PGX";
+    static String PGX_DRIVER="PGQL_IN_DATABASE";
+    //static String PGX_DRIVER="GRAPH_SERVER_PGX";
     static String PGX_USERNAME=System.getenv("PGX_USERNAME").replace("\"","");
     static String PGX_PASSWORD=System.getenv("PGX_PASSWORD").replace("\"","");
     static String PGX_GRAPH=System.getenv("PGX_GRAPH").replace("\"","");
     static String PGX_QUERY=System.getenv("PGX_QUERY").replace("\"","");
+    //static int PGX_EXECUTIONS=Integer.valueOf(System.getenv("PGX_EXECUTIONS").replace("\"",""));
+    static int PGX_EXECUTIONS=100;
     static String token;
 
     public static void RESTlogin() {
@@ -95,8 +100,10 @@ public class Main {
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
-            HttpResponse<String> response = pgxServer.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Query execution, response body:\n"+response.body()+"\n");
+            for ( int i=1; i<=PGX_EXECUTIONS; i++) {
+                HttpResponse<String> response = pgxServer.send(request, HttpResponse.BodyHandlers.ofString());
+                System.out.println("Query REST execution #"+i+", response body:\n" + response.body() + "\n");
+            }
         }
         catch (Exception e) {e.printStackTrace();}
     }
@@ -111,14 +118,19 @@ public class Main {
             PgxGraph graph;
             ServerInstance si = GraphServer.getInstance(PGX_URL,PGX_USERNAME,PGX_PASSWORD.toCharArray());
             PgxSession ses = si.createSession("my-session");
-            graph = ses.getGraph(PGX_GRAPH);
-            System.out.println(graph);
+            PgqlResultSet res;
+            for (int i=1;i<=PGX_EXECUTIONS;i++) {
+                res = ses.queryPgql(PGX_QUERY);
+                System.out.println("Query PPGX API exection #"+i+":\n"+res.getNumResults());
+                res.close();
+            }
+            ses.close();
         }
         catch (Exception e) {e.printStackTrace();}
     }
 
     public static void main(String[] args) {
-        RESTQuery();
-        //APIQuery();
+        //RESTQuery();
+        APIQuery();
     }
 }
