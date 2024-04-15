@@ -40,15 +40,15 @@ import org.json.*;
 
 public class Main {
     static String PGX_URL=System.getenv("PGX_URL").replace("\"","");
-    //static String PGX_DRIVER=System.getenv("PGX_DRIVER").replace("\"","");
-    static String PGX_DRIVER="PGQL_IN_DATABASE";
+    static String PGX_DRIVER=System.getenv("PGX_DRIVER").replace("\"","");
+    //static String PGX_DRIVER="PGQL_IN_DATABASE";
     //static String PGX_DRIVER="GRAPH_SERVER_PGX";
     static String PGX_USERNAME=System.getenv("PGX_USERNAME").replace("\"","");
     static String PGX_PASSWORD=System.getenv("PGX_PASSWORD").replace("\"","");
     static String PGX_GRAPH=System.getenv("PGX_GRAPH").replace("\"","");
     static String PGX_QUERY=System.getenv("PGX_QUERY").replace("\"","");
-    //static int PGX_EXECUTIONS=Integer.valueOf(System.getenv("PGX_EXECUTIONS").replace("\"",""));
-    static int PGX_EXECUTIONS=100;
+    static int PGX_EXECUTIONS=Integer.valueOf(System.getenv("PGX_EXECUTIONS").replace("\"",""));
+    //static int PGX_EXECUTIONS=100;
     static String token;
 
     public static void RESTlogin() {
@@ -57,7 +57,8 @@ public class Main {
                     "\""+PGX_USERNAME+"\""+
                     ",\"password\":"+
                     "\""+PGX_PASSWORD+"\""+
-                    ",\"creaateSession\":true}";
+                    ",\"createSession\":true"+
+                    ",\"source\":\"POSTMAN\"}";
             HttpClient pgxServer = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(PGX_URL + "/auth/token"))
@@ -134,6 +135,6 @@ public class Main {
         RESTQuery();
         //APIQuery();
         long end = System.currentTimeMillis();
-        System.out.println("Execution elapsed time in milliseconds: "+(end-start));
+        System.out.println("Number of executions: "+PGX_EXECUTIONS+", Total elapsed time in milliseconds: "+(end-start));
     }
 }
