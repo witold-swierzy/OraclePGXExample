@@ -34,6 +34,8 @@ import org.json.*;
    5. PGX_QUERY
       this is the text of the query used in the example
       example: PGX_QUERY="SELECT A.LAST_NAME, A.FIRST_NAME, B.NAME FROM MATCH(A:STUDENTS) - [] - (B:COURSES) ON SCHOOL_GRAPH"
+   6. PGX_EXECUTIONS
+      this is the number of executions of the query provided inn PGX_QUERY environment variable
  */
 
 public class Main {
@@ -114,7 +116,6 @@ public class Main {
     }
     public static void APIQuery() {
         try {
-            PgxGraph graph;
             ServerInstance si = GraphServer.getInstance(PGX_URL,PGX_USERNAME,PGX_PASSWORD.toCharArray());
             PgxSession ses = si.createSession("my-session");
             PgqlResultSet res;
@@ -129,7 +130,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         RESTQuery();
-        APIQuery();
+        //APIQuery();
+        long end = System.currentTimeMillis();
+        System.out.println("Execution elapsed time in milliseconds: "+(end-start));
     }
 }
