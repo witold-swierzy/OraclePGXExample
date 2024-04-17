@@ -23,7 +23,6 @@ import org.json.*;
       PGX_API_QUERY_MODE   - when the app is executed to query the graph by using Oracle PGX API
       PGX_LOAD_MODE  - when the app is executed to load the graph from the database
       PGX_SYNC_MODE  - when the app is executed to synchronize the graph
-
    2. PGX_URL
       this is the main URL for the PGX server.
       example: PGX_URL="http://pgxserver.adomain.com:7007"
@@ -185,7 +184,7 @@ public class Main {
                 PrintWriter writer = new PrintWriter(PGX_CONFIG_FILE);
                 writer.print(config);
                 writer.close();
-                graph.close();
+                graph.destroy();
                 graph = ses.readGraphWithProperties(config, true);
                 graph.publishWithSnapshots();
                 //graph.pin();
@@ -235,10 +234,5 @@ public class Main {
         System.out.println("Number of executions : "+PGX_EXECUTIONS);
         System.out.println("Execution completed successfully");
         System.out.println("Execution total elapsed time in milliseconds: "+(end-start));
-        System.out.println("Sleeping for 10 seconds");
-        try {
-            Thread.sleep(10000);
-        }
-        catch (Exception e) {e.printStackTrace();}
     }
 }
