@@ -38,7 +38,7 @@ import org.json.*;
       this is the name of the graph used in the example
       example: PGX_GRAPH=SCHOOL_GRAPH
       NOTE:
-      Graph used in the example needs to be loaded and published in another session
+      Graph used in the example needs to be loaded and published in another session in case, when
    7. PGX_QUERY
       this is the text of the query used in the example
       example: PGX_QUERY="SELECT A.LAST_NAME, A.FIRST_NAME, B.NAME FROM MATCH(A:STUDENTS) - [] - (B:COURSES) ON SCHOOL_GRAPH"
@@ -233,7 +233,7 @@ public class Main {
         System.out.println("Execution mode       : "+PGX_EXECUTION_MODE);
         System.out.println("Query mode           : "+PGX_DRIVER);
         System.out.println("Number of executions : "+PGX_EXECUTIONS);
-        System.out.println("Execution completed succesfully");
+        System.out.println("Execution completed successfully");
         System.out.println("Execution total elapsed time in milliseconds: "+(end-start));
         System.out.println("Sleeping for 10 seconds");
         try {
