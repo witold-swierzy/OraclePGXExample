@@ -77,7 +77,8 @@ public class Main {
             PGX_DRIVER         = "N/A";
         PGX_USERNAME       = System.getenv("PGX_USERNAME").replace("\"","");
         PGX_PASSWORD       = System.getenv("PGX_PASSWORD").replace("\"","");
-        PGX_GRAPH          = System.getenv("PGX_GRAPH").replace("\"","");
+        //PGX_GRAPH          = System.getenv("PGX_GRAPH").replace("\"","");
+        PGX_GRAPH          = "SCHOOL_GRAPH_1";
         PGX_QUERY          = System.getenv("PGX_QUERY").replace("\"","");
         if ( PGX_EXECUTION_MODE.equals("PGX_REST_QUERY_MODE") || PGX_EXECUTION_MODE.equals("PGX_API_QUERY_MODE") )
             PGX_EXECUTIONS     = Integer.valueOf(System.getenv("PGX_EXECUTIONS").replace("\"",""));
@@ -186,7 +187,7 @@ public class Main {
                 writer.close();
                 graph.destroy();
                 graph = ses.readGraphWithProperties(config, true);
-                graph.publishWithSnapshots();
+                graph.publishWithSnapshots(VertexProperty.ALL,EdgeProperty.ALL);
                 //graph.pin();
             }
         }
@@ -201,6 +202,8 @@ public class Main {
             ServerInstance si = GraphServer.getInstance(PGX_URL, PGX_USERNAME, PGX_PASSWORD.toCharArray());
             PgxSession ses = si.createSession("my-session");
             PgxGraph graph = ses.getGraph(PGX_GRAPH);
+            long oldedges = graph.getNumEdges();
+            long oldvertices = graph.getNumVertices();
             PartitionedGraphConfig config = GraphConfigFactory.forPartitioned().fromFilePath(PGX_CONFIG_FILE);
             System.out.println(config);
             Synchronizer synchronizer = new Synchronizer.Builder<FlashbackSynchronizer>()
@@ -210,6 +213,8 @@ public class Main {
                     .setGraphConfiguration(config)
                     .build();
             graph = synchronizer.sync();
+            System.out.println(graph);
+            System.out.println("old vertices : "+oldvertices+" old edges : "+oldedges);
         }
         catch (Exception e) {e.printStackTrace();}
     }
